@@ -21,19 +21,15 @@ CREATE TABLE IF NOT EXISTS movie_title
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 );
-
 INSERT INTO language (ID, NAME)
 VALUES ('ru', 'Russian'),
        ('en', 'English'),
        ('de', 'German');
 
+START TRANSACTION ;
 INSERT INTO movie_title (MOVIE_ID, LANGUAGE_ID, TITLE)
 SELECT ID, 'ru', TITLE FROM movie;
 
-# SELECT TITLE, 'ru', ID  INTO movie_title FROM movie;
-
-# ALTER TABLE movie_title
-#     MODIFY LANGUAGE_ID varchar(2) not null;
-
 ALTER TABLE movie
     DROP TITLE;
+COMMIT;
