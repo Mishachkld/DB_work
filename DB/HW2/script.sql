@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS ROLES
 
 
 # а) Найти людей, которые одновременно были режиссером и продюссером какого-либо фильма
-SELECT p.NAME, d.NAME
+SELECT p.NAME
 FROM people p,
      director d
          INNER JOIN movie m ON d.ID = m.DIRECTOR_ID
@@ -51,6 +51,6 @@ WHERE d.NAME = p.NAME;
 SELECT m.ID
 FROM movie m
          INNER JOIN movie_title mt ON m.ID = mt.MOVIE_ID
-WHERE  mt.TITLE = 'ru' HAVING COUNT(*) > 1;
+WHERE  mt.TITLE = 'ru' GROUP BY m.ID HAVING COUNT(*) > 1;
 
 
