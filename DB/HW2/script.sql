@@ -1,8 +1,8 @@
 # ALTER TABLE movie_title ADD ROLE varchar(20) not null;
 CREATE TABLE people
 (
-    ID int not null auto_increment,
-    NAME varchar(200) not null , # может лучше ключом сделать имя?
+    ID   int          not null auto_increment,
+    NAME varchar(200) not null, # может лучше ключом сделать имя?
 
     PRIMARY KEY (ID)
 );
@@ -10,17 +10,17 @@ CREATE TABLE people
 
 CREATE TABLE movie_people
 (
-    MOVIE_ID int not null,
-    PEOPLE_ID int not null,
-    ROLE varchar(256) not null,
+    MOVIE_ID          int          not null,
+    PEOPLE_ID         int          not null,
+    ROLE              varchar(256) not null,
     NAME_OF_CHARACTER varchar(200),
     PRIMARY KEY (MOVIE_ID, PEOPLE_ID),
     FOREIGN KEY FK_MP_MOVIE (MOVIE_ID)
-        REFERENCES movie(ID)
+        REFERENCES movie (ID)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
     FOREIGN KEY FK_MP_PEOPLE (PEOPLE_ID)
-        REFERENCES people(ID)
+        REFERENCES people (ID)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 );
@@ -30,3 +30,24 @@ CREATE TABLE IF NOT EXISTS ROLES
     ID varchar(256) not null,
     PRIMARY KEY (ID)
 );
+
+# поиск всех актеров, снимавшихся в конкретном фильме
+# выбор режиссера конкретного фильма
+# получение списка фильмов, в которых играл конкретный актер
+
+
+# а) Найти людей, которые одновременно были режиссером и продюссером какого-либо фильма
+SELECT p.NAME, d.NAME
+FROM people p,
+     director d
+         INNER JOIN movie m ON d.ID = m.DIRECTOR_ID
+         INNER JOIN movie_people mp ON m.ID = mp.MOVIE_ID and mp.ROLE = 'Продюссер'
+WHERE d.NAME = p.NAME;
+
+# б) Найти все фильмы, имеющие двойников по названию на русском языке.
+SELECT m.ID
+FROM movie m
+         INNER JOIN movie_title mt ON m.ID = mt.MOVIE_ID
+WHERE  mt.TITLE = 'ru' HAVING COUNT(*) > 1;
+
+
