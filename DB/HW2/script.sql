@@ -1,4 +1,3 @@
-# ALTER TABLE movie_title ADD ROLE varchar(20) not null;
 CREATE TABLE people
 (
     ID   int          not null auto_increment,
@@ -6,7 +5,6 @@ CREATE TABLE people
 
     PRIMARY KEY (ID)
 );
-
 
 CREATE TABLE movie_people
 (
@@ -51,6 +49,8 @@ WHERE d.NAME = p.NAME;
 SELECT m.ID
 FROM movie m
          INNER JOIN movie_title mt ON m.ID = mt.MOVIE_ID
-WHERE  mt.TITLE = 'ru' GROUP BY m.ID HAVING COUNT(*) > 1;
+WHERE mt.TITLE = 'ru'
+GROUP BY m.ID
+HAVING COUNT(*) > 1;
 
 
